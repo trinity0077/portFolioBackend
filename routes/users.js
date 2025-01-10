@@ -18,7 +18,7 @@ const uniqid = require('uniqid');
 router.post("/signup", (req, res) => {
   if (!checkBody(req.body, ["userName", "password",])) {
     console.log(req.body)
-    res.json({ result: false, error: "Missing or empty fields" });
+    res.json({ result: false, error: "Missing or empty fields de signUP ERROR 1" });
     return;
   }
   // Check if the user has not already been registered
@@ -49,7 +49,7 @@ router.post("/signup", (req, res) => {
 // Connexion
 router.post("/signin", (req, res) => {
   if (!checkBody(req.body, ["userName", "password"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
+    res.json({ result: false, error: "Missing or empty fields de signIN ERROR 2" });
     return;
   }
 
@@ -301,7 +301,7 @@ router.put('/changesimageprofil', (req, res) => {
 router.get('/add/:token', (req, res) => {
   console.log('req.paramas.token', req.params.token);
   if (!req.params.token) {
-    res.json({ result: false, error: 'Missing or empty fields' });
+    res.json({ result: false, error: 'Missing or empty fields de add/token ERROR 3' });
     return;
   }
   User.findOne({ token: req.params.token }).then((user) => {
