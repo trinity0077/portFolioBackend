@@ -16,20 +16,20 @@ const uniqid = require('uniqid');
 
 // Inscription // checkbody full   (!checkBody(req.body, ["firstname", "username", "email", "password", "age", "gender",]))
 router.post("/signup", (req, res) => {
-  if (!checkBody(req.body, ["userName", "password",])) {
-    console.log(req.body)
+  if (!checkBody(req.body, ["username", "password",])) {
+    console.log(req.body,'SingnupBackend au checkbody')
     res.json({ result: false, error: "Missing or empty fields de signUP ERROR 1" });
     return;
   }
   // Check if the user has not already been registered
   User.findOne({
-    username: { $regex: new RegExp(req.body.userName, "i") }, // force l'email en minuscule.
+    username: { $regex: new RegExp(req.body.username, "i") }, // force l'email en minuscule.
   }).then((data) => {
     console.log(data)
     if (data === null) {
       const hash = bcrypt.hashSync(req.body.password, 10); // Hash réalisé sur le mot de passe avec un nombre de tours (coût) 
       const newUser = new User({
-        username: req.body.userName,
+        username: req.body.username,
         password: hash,
         smokeCigarettes: [],
         notSmokeCigarettes: [],
@@ -37,7 +37,7 @@ router.post("/signup", (req, res) => {
         dateCreation: Date.now(),
       });
       newUser.save().then((dataBase) => {
-        res.json({ result: true, token: dataBase.token, userName: dataBase.username, dateCreation: dataBase.dateCreation  });
+        res.json({ result: true, token: dataBase.token, username: dataBase.username, dateCreation: dataBase.dateCreation  });
       });
     } else {
       // User already exists in database
@@ -48,12 +48,12 @@ router.post("/signup", (req, res) => {
 
 // Connexion
 router.post("/signin", (req, res) => {
-  if (!checkBody(req.body, ["userName", "password"])) {
+  if (!checkBody(req.body, ["username", "password"])) {
     res.json({ result: false, error: "Missing or empty fields de signIN ERROR 2" });
     return;
   }
 
-  User.findOne({ username: { $regex: new RegExp(req.body.userName, "i") } }).then(
+  User.findOne({ username: { $regex: new RegExp(req.body.username, "i") } }).then(
     (data) => {
       if (data !== null && bcrypt.compareSync(req.body.password, data.password)) {
         res.json({
