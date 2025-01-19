@@ -31,13 +31,14 @@ router.post("/signup", (req, res) => {
       const newUser = new User({
         username: req.body.username,
         password: hash,
+        cigaretteprice:0.6,
         smokeCigarettes: [],
         notSmokeCigarettes: [],
         token: uid2(32),
         dateCreation: Date.now(),
       });
       newUser.save().then((dataBase) => {
-        res.json({ result: true, token: dataBase.token, username: dataBase.username, dateCreation: dataBase.dateCreation  });
+        res.json({ result: true, token: dataBase.token, username: dataBase.username, dateCreation: dataBase.dateCreation, cigaretteprice: dataBase.cigaretteprice  });
       });
     } else {
       // User already exists in database
@@ -60,6 +61,7 @@ router.post("/signin", (req, res) => {
           result: true,
           token: data.token,
           dateCreation: data.dateCreation,
+          cigaretteprice:data.cigaretteprice,
           firstname: data.firstname,
           username: data.username,
           // email: data.email,
@@ -73,6 +75,39 @@ router.post("/signin", (req, res) => {
     }
   );
 });
+
+//route pour modifier le prix d'une cigarette
+// Route pour modifier le prix d'une cigarette
+router.post("/updatecigaretteprice/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPrice } = req.body;  // Le nouveau prix de la cigarette
+
+    // Recherche de l'utilisateur par son token
+    const user = await User.findOne({ token });
+
+    if (!user) {
+      return res.json({ result: false, error: "User not found" });
+    }
+
+    // Validation du nouveau prix
+    if (isNaN(newPrice) || newPrice <= 0) {
+      return res.json({ result: false, error: "Invalid price" });
+    }
+// console.log(newPrice)
+    // Mise à jour du prix de la cigarette
+    user.cigaretteprice = newPrice;
+
+    // Sauvegarde des modifications de l'utilisateur
+    await user.save();
+
+    return res.json({ result: true, message: "Cigarette price updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.json({ result: false, error: "Failed to update cigarette price" });
+  }
+});
+
 
 // route pour obtenir les info cigarettes
 

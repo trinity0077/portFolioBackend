@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
   dateCreation: Date,
   followedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
   token: String,
+  cigaretteprice: Number,
   smokeCigarettes: [smokecigarettesSchema], // Utilisation du schéma des cigarettes fumées comme sous-document
   NotSmokedcigarettes: [notSmokedcigarettesSchema]
 });
