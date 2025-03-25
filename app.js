@@ -11,6 +11,7 @@ var logger = require('morgan');
 var usersRouter = require('./routes/users');
 var racesRouter = require('./routes/races');
 var chatsRouter = require('./routes/chats');
+var emailsRouter = require('./routes/emails'); 
 
 var app = express();
 
@@ -36,5 +37,6 @@ sont ensuite ajoutés à l'application pour gérer les requêtes HTTP entrantes.
 app.use('/users', usersRouter);
 app.use('/races', racesRouter);
 app.use('/chats', chatsRouter);
+app.use('/emails', emailsRouter);
 
 module.exports = app;

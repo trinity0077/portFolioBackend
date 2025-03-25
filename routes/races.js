@@ -172,11 +172,7 @@ router.post('/filter', async (req, res) => {
     return;
   }
   const currentDate = new Date();
-  // User.findOne({ token: req.params.token }).then(user => {
-  //   if (user === null) {
-  //     res.json({ result: false, error: 'User not found' });
-  //     return;
-  //   }
+
     Race.find({ date: { $gte: currentDate } }) 
     // Populate and select specific fields to return (for security purposes)
       .populate('author', ['username', 'firstname'])
