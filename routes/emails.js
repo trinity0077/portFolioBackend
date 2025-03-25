@@ -37,13 +37,13 @@ router.post("/send-email", async (req, res) => {
 
 router.post('/test', async (req, res) => {
     try {
-      const { email, subject, message } = req.body;
+      const { email, subject, message, gdprConsent } = req.body;
   
       const response = await resend.emails.send({
         from: 'onboarding@resend.dev', // Doit être un domaine vérifié chez Resend
         to: 'gryspeerdt.camille@gmail.com', // Email du client
-        subject: `Email recu de ${email}, sur le sujet de :${subject}`,
-        text: `${message}, <= variable message surement vide `,
+        subject: `Email recu de ${email}, sur le sujet de :${subject}`, 
+        text: `${message}, <= variable message surement vide `, //message 
       });
   
       // Réponse pour confirmer l'envoi
